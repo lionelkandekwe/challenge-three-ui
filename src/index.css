@@ -1,0 +1,10 @@
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+	font-size: 0.875rem;
+	color: #231f20;
+	font-weight: 300;
+	line-height: 1.25rem;
+}
