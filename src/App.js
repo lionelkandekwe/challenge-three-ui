@@ -5,7 +5,7 @@ import Loader from '../src/components/Loader'
 import classes from '../src/assets/css/main.module.css'
 import axios from 'axios'
 
-const baseUrl = 'https://salty-cliffs-35552.herokuapp.com'
+const baseurl = 'https://salty-cliffs-35552.herokuapp.com'
 
 const App = () => {
 	const [albumId, setAlbumId] = useState()
@@ -14,7 +14,7 @@ const App = () => {
 
 	const getAlbumById = useCallback(() => {
 		axios
-			.get(`${baseUrl}/api/albums/${albumId}`)
+			.get(`${baseurl}/api/albums/${albumId}`)
 			.then((res) => {
 				setAlbum(res.data)
 				setIsLoaded((currentIsLoaded) => !currentIsLoaded)
