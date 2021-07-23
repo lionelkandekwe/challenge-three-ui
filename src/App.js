@@ -1,26 +1,30 @@
 import React, { useState, useCallback } from 'react'
 import NavBar from '../src/components/NavBar'
 import Search from '../src/components/Search'
+import Loader from '../src/components/Loader'
 import classes from '../src/assets/css/main.module.css'
 import axios from 'axios'
 
-const baseurl='https://salty-cliffs-35552.herokuapp.com'
+const baseUrl = 'https://salty-cliffs-35552.herokuapp.com'
 
 const App = () => {
 	const [albumId, setAlbumId] = useState()
 	const [album, setAlbum] = useState([])
+	const [isLoaded, setIsLoaded] = useState(false)
 
 	const getAlbumById = useCallback(() => {
 		axios
-			.get(`${baseurl}/api/albums/${albumId}`)
+			.get(`${baseUrl}/api/albums/${albumId}`)
 			.then((res) => {
 				setAlbum(res.data)
+				setIsLoaded((currentIsLoaded) => !currentIsLoaded)
 			})
 			.catch((err) => console.log(err))
 	}, [albumId])
 
 	const getAlbumHandler = (e) => {
 		e.preventDefault()
+		setIsLoaded((currentIsLoaded) => !currentIsLoaded)
 		getAlbumById()
 	}
 	return (
@@ -33,19 +37,22 @@ const App = () => {
 					getAlbumHandler={getAlbumHandler}
 				/>
 			</div>
-
-			<div className={classes.wrapper}>
-				{album.map((album) => (
-					<div key={album.id} className={classes.innerContainer}>
-						<div className={classes.thumbnail}>
-							<img src={album.thumbnailUrl} alt="" />
+			{isLoaded ? (
+				<Loader />
+			) : (
+				<div className={classes.wrapper}>
+					{album.map((album) => (
+						<div key={album.id} className={classes.innerContainer}>
+							<div className={classes.thumbnail}>
+								<img src={album.thumbnailUrl} alt="" />
+							</div>
+							<div className={classes.title}>
+								<p>{album.title}</p>
+							</div>
 						</div>
-						<div className={classes.title}>
-							<p>{album.title}</p>
-						</div>
-					</div>
-				))}
-			</div>
+					))}
+				</div>
+			)}
 		</div>
 	)
 }
